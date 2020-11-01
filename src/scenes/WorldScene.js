@@ -1,11 +1,23 @@
 import Phaser from "phaser";
+import EncounterZone from "../EncounterZone";
 
 const VELOCITY = 80;
 
-const ENCOUNTERS = [ // x, y, width, height
-  [20, 50, 20, 20],
-  [420, 350, 30, 30]
-  // and so forth...
+const ENCOUNTERS = [
+  {
+    x: 50,
+    y: 50,
+    width: 50,
+    height: 50,
+    sprites: [
+      {
+        x: 0,
+        y: 0,
+        texture: "player",
+        frame: 2
+      }
+    ]
+  }
 ];
 
 export default new Phaser.Class({
@@ -24,8 +36,29 @@ export default new Phaser.Class({
     });
   },
 
-  onEncounter() {
-    console.log("FOIGHT!");
+  onEncounter(player, zone) {
+    zone.sprites.forEach(sprite => {
+      const xDiff = player.x - sprite.x;
+      const yDiff = player.y - sprite.y;
+
+      // "Greater difference" determines which axis to take into account
+      // Favour horizontal axis in case of strict equality, like for movement
+      if (Math.abs(yDiff) > Math.abs(xDiff)) {
+        sprite.flipX = false;
+
+        if (yDiff > 0) {
+          sprite.setFrame(0); // down
+        } else {
+          sprite.setFrame(2); // up
+        }
+      } else {
+        sprite.setFrame(1); // lateral
+
+        if (xDiff < 0) {
+          sprite.flipX = true; // left
+        }
+      }
+    });
   },
 
   create() {
@@ -38,7 +71,7 @@ export default new Phaser.Class({
     const obstacles = map.createStaticLayer("obstacles", tiles, 0, 0);
 
     // Player
-    this.player = this.physics.add.sprite(50, 100, "player", 6); // "player": resource name
+    this.player = this.physics.add.sprite(100, 100, "player", 6); // "player": resource name
 
     // Collision
     this.physics.world.bounds.width = map.widthInPixels;
@@ -60,10 +93,38 @@ export default new Phaser.Class({
     this.createPlayerAnimation("up", [2, 8, 2, 14]);
     this.createPlayerAnimation("down", [0, 6, 0, 12]);
 
-    // Encounter zones
-    this.encounters = this.physics.add.group({ classType: Phaser.GameObjects.Zone });
-    ENCOUNTERS.forEach(encounter => this.encounters.create(...encounter));
-    this.physics.add.overlap(this.player, this.encounters, this.onEncounter, false, this);
+    // Encounters
+    this.encounterZones = this.physics.add.group({ classType: EncounterZone });
+    this.encounterSprites = this.physics.add.group({ classType: Phaser.GameObjects.Sprite });
+
+    ENCOUNTERS.forEach((encounter, index) => {
+      const sprites = encounter.sprites.map(sprite => new Phaser.GameObjects.Sprite(
+        this,
+        encounter.x + sprite.x,
+        encounter.y + sprite.y,
+        sprite.texture,
+        sprite.frame
+      ));
+
+      const zone = new EncounterZone(
+        this,
+        encounter.x,
+        encounter.y,
+        encounter.width,
+        encounter.height,
+        sprites
+      );
+
+      this.encounterZones.add(zone, true);
+      this.encounterSprites.addMultiple(sprites, true);
+    });
+
+    this.encounterSprites.children.entries.forEach(sprite => {
+      sprite.body.immovable = true;
+    });
+
+    this.physics.add.overlap(this.player, this.encounterZones, this.onEncounter, false, this);
+    this.physics.add.collider(this.player, this.encounterSprites);
   },
 
   update(/*time, delta*/) {
