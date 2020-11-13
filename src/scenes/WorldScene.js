@@ -1,7 +1,39 @@
 import Phaser from "phaser";
-import EncounterZone from "../EncounterZone";
+import EncounterZone from "../objects/EncounterZone";
+import EventZone from "../objects/EventZone";
+import FramedSprite from "../objects/FramedSprite";
 
 const VELOCITY = 80;
+const ITEM_PADDING = 10;
+
+const EVENTS = [
+  {
+    x: 50,
+    y: 190,
+    width: 50,
+    height: 50,
+
+    onEnter() {
+      console.log("enter!");
+    }
+  }
+];
+
+const ITEMS = [
+  {
+    x: 200,
+    y: 50,
+    texture: "player",
+    frames: { up: 5, down: 3, side: 4 },
+    startFrameKey: "side",
+    startFlipX: true,
+
+    onInteract() {
+      // TODO: dialogue
+      console.log("interact!");
+    }
+  }
+];
 
 const ENCOUNTERS = [
   {
@@ -14,11 +46,20 @@ const ENCOUNTERS = [
         x: 0,
         y: 0,
         texture: "player",
-        frame: 2
+        frames: { up: 2, down: 0, side: 1 },
+        startFrameKey: "side"
       }
     ]
   }
 ];
+
+function triggerZone(player, zone) {
+  zone.trigger();
+}
+
+function makeImmovable(sprite) {
+  sprite.body.immovable = true;
+}
 
 export default new Phaser.Class({
   Extends: Phaser.Scene,
@@ -36,28 +77,117 @@ export default new Phaser.Class({
     });
   },
 
-  onEncounter(player, zone) {
-    zone.sprites.forEach(sprite => {
-      const xDiff = player.x - sprite.x;
-      const yDiff = player.y - sprite.y;
+  rotateTowardsPlayer(sprite) {
+    const xDiff = this.player.x - sprite.x;
+    const yDiff = this.player.y - sprite.y;
+    sprite.flipX = false;
 
-      // "Greater difference" determines which axis to take into account
-      // Favour horizontal axis in case of strict equality, like for movement
-      if (Math.abs(yDiff) > Math.abs(xDiff)) {
-        sprite.flipX = false;
-
-        if (yDiff > 0) {
-          sprite.setFrame(0); // down
-        } else {
-          sprite.setFrame(2); // up
-        }
+    // "Greater difference" determines which axis to take into account
+    // Favour horizontal axis in case of strict equality, like for movement
+    if (Math.abs(yDiff) > Math.abs(xDiff)) {
+      if (yDiff > 0) {
+        sprite.setFrame(sprite.frames.down);
       } else {
-        sprite.setFrame(1); // lateral
-
-        if (xDiff < 0) {
-          sprite.flipX = true; // left
-        }
+        sprite.setFrame(sprite.frames.up);
       }
+    } else {
+      sprite.setFrame(sprite.frames.side);
+
+      if (xDiff < 0) {
+        sprite.flipX = true; // left
+      }
+    }
+  },
+
+  createEvents(events) {
+    this.eventZones = this.physics.add.group({ classType: EventZone });
+
+    this.eventZones.addMultiple(
+      events.map(({ x, y, width, height, onEnter, onExit }) => new EventZone(this, x, y, width, height, onEnter, onExit)),
+      true
+    );
+
+    this.physics.add.overlap(this.player, this.eventZones, triggerZone, false, this);
+  },
+
+  createItems(items) {
+    this.itemZones = this.physics.add.group({ classType: EventZone });
+    this.itemSprites = this.physics.add.group({ classType: FramedSprite });
+
+    items.forEach(({ x, y, texture, frames, startFrameKey, startFlipX, onInteract }) => {
+      const sprite = new FramedSprite(this, x, y, texture, frames, startFrameKey);
+      sprite.flipX = !!startFlipX;
+
+      const zone = new EventZone(
+        this,
+        x,
+        y,
+        sprite.width + ITEM_PADDING,
+        sprite.height + ITEM_PADDING,
+        () => {
+          this.actionKey.on("up", () => {
+            this.rotateTowardsPlayer(sprite);
+            onInteract();
+          });
+        },
+        () => {
+          this.actionKey.off("up");
+        }
+      );
+
+      this.itemZones.add(zone, true);
+      this.itemSprites.add(sprite, true);
+    });
+
+    this.itemSprites.children.entries.forEach(makeImmovable);
+    this.physics.add.overlap(this.player, this.itemZones, triggerZone, false, this);
+    this.physics.add.collider(this.player, this.itemSprites);
+  },
+
+  createEncounters(encounters) {
+    this.encounterZones = this.physics.add.group({ classType: EncounterZone });
+    this.encounterSprites = this.physics.add.group({ classType: FramedSprite });
+
+    encounters.forEach(encounter => {
+      const sprites = encounter.sprites.map(({ x, y, texture, frames, startFrameKey, startFlipX }) => {
+        const sprite = new FramedSprite(
+          this,
+          encounter.x + x,
+          encounter.y + y,
+          texture,
+          frames,
+          startFrameKey
+        );
+
+        sprite.flipX = !!startFlipX;
+        return sprite;
+      });
+
+      const zone = new EncounterZone(
+        this,
+        encounter.x,
+        encounter.y,
+        encounter.width,
+        encounter.height,
+        sprites
+      );
+
+      this.encounterZones.add(zone, true);
+      this.encounterSprites.addMultiple(sprites, true);
+    });
+
+    this.encounterSprites.children.entries.forEach(makeImmovable);
+    this.physics.add.overlap(this.player, this.encounterZones, this.onEncounter, false, this);
+    this.physics.add.collider(this.player, this.encounterSprites);
+  },
+
+  onEncounter(player, zone) {
+    zone.trigger();
+
+    // TODO: battle
+    // To run code only once, use callback(s) in super() in EncounterZone
+    zone.sprites.forEach(sprite => {
+      this.rotateTowardsPlayer(sprite);
     });
   },
 
@@ -80,8 +210,9 @@ export default new Phaser.Class({
     obstacles.setCollisionByExclusion([-1]);
     this.physics.add.collider(this.player, obstacles);
 
-    // Movement (keyboard)
-    this.cursors = this.input.keyboard.createCursorKeys();
+    // Keyboard
+    this.cursorKeys = this.input.keyboard.createCursorKeys();
+    this.actionKey = this.input.keyboard.addKey("space");
 
     // Camera
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -89,75 +220,52 @@ export default new Phaser.Class({
     this.cameras.main.roundPixels = true; // hmmmmm
 
     // Player animation
-    this.createPlayerAnimation("lateral", [1, 7, 1, 13]);
+    this.createPlayerAnimation("side", [1, 7, 1, 13]);
     this.createPlayerAnimation("up", [2, 8, 2, 14]);
     this.createPlayerAnimation("down", [0, 6, 0, 12]);
 
-    // Encounters
-    this.encounterZones = this.physics.add.group({ classType: EncounterZone });
-    this.encounterSprites = this.physics.add.group({ classType: Phaser.GameObjects.Sprite });
-
-    ENCOUNTERS.forEach((encounter, index) => {
-      const sprites = encounter.sprites.map(sprite => new Phaser.GameObjects.Sprite(
-        this,
-        encounter.x + sprite.x,
-        encounter.y + sprite.y,
-        sprite.texture,
-        sprite.frame
-      ));
-
-      const zone = new EncounterZone(
-        this,
-        encounter.x,
-        encounter.y,
-        encounter.width,
-        encounter.height,
-        sprites
-      );
-
-      this.encounterZones.add(zone, true);
-      this.encounterSprites.addMultiple(sprites, true);
-    });
-
-    this.encounterSprites.children.entries.forEach(sprite => {
-      sprite.body.immovable = true;
-    });
-
-    this.physics.add.overlap(this.player, this.encounterZones, this.onEncounter, false, this);
-    this.physics.add.collider(this.player, this.encounterSprites);
+    // World elements
+    this.createEvents(EVENTS);
+    this.createItems(ITEMS);
+    this.createEncounters(ENCOUNTERS);
   },
 
   update(/*time, delta*/) {
     // Player movement
     this.player.body.setVelocity(0);
 
-    if (this.cursors.left.isDown) {
+    if (this.cursorKeys.left.isDown) {
       this.player.body.setVelocityX(-VELOCITY);
-    } else if (this.cursors.right.isDown) {
+    } else if (this.cursorKeys.right.isDown) {
       this.player.body.setVelocityX(VELOCITY);
     }
 
-    if (this.cursors.up.isDown) {
+    if (this.cursorKeys.up.isDown) {
       this.player.body.setVelocityY(-VELOCITY);
-    } else if (this.cursors.down.isDown) {
+    } else if (this.cursorKeys.down.isDown) {
       this.player.body.setVelocityY(VELOCITY);
     }
 
     // Player animation
-    if (this.cursors.left.isDown) {
-      this.player.anims.play("lateral", true);
+    if (this.cursorKeys.left.isDown) {
+      this.player.anims.play("side", true);
       this.player.flipX = true;
-    } else if (this.cursors.right.isDown) {
-      this.player.anims.play("lateral", true);
+    } else if (this.cursorKeys.right.isDown) {
+      this.player.anims.play("side", true);
       this.player.flipX = false;
-    } else if (this.cursors.up.isDown) {
+    } else if (this.cursorKeys.up.isDown) {
       this.player.anims.play("up", true);
       this.player.flipX = false;
-    } else if (this.cursors.down.isDown) {
+    } else if (this.cursorKeys.down.isDown) {
       this.player.anims.play("down", true);
       this.player.flipX = false;
     } else {
       this.player.anims.stop();
     }
+
+    // Reset event zone overlaps
+    this.eventZones.children.entries.forEach(zone => zone.reset());
+    this.itemZones.children.entries.forEach(zone => zone.reset());
+    this.encounterZones.children.entries.forEach(zone => zone.reset());
   }
 });
