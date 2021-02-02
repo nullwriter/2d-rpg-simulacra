@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { renderUI } from "../main";
 import EncounterZone from "../objects/EncounterZone";
 import EventZone from "../objects/EventZone";
 import FramedSprite from "../objects/FramedSprite";
@@ -29,8 +30,23 @@ const ITEMS = [
     startFlipX: true,
 
     onInteract() {
-      // TODO: dialogue
-      console.log("interact!");
+      renderUI([
+        "Bonjour, petit !",
+        {
+          text: "Bien dormi ?",
+          choices: [
+            {
+              text: "Oui",
+              // This could also update game variables to disable/change interactions later on
+              action: () => renderUI("Ben tant mieux pour toi !")
+            },
+            {
+              text: "Non",
+              action: () => renderUI("Bah moi non plus lol")
+            }
+          ]
+        }
+      ]);
     }
   }
 ];
@@ -125,13 +141,13 @@ export default new Phaser.Class({
         sprite.width + ITEM_PADDING,
         sprite.height + ITEM_PADDING,
         () => {
-          this.actionKey.on("up", () => {
+          this.actionKey.on("down", () => {
             this.rotateTowardsPlayer(sprite);
             onInteract();
           });
         },
         () => {
-          this.actionKey.off("up");
+          this.actionKey.off("down");
         }
       );
 

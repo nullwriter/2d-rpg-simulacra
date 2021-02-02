@@ -1,6 +1,6 @@
-# parcel-phaser-rpg
+# parcel-phaser-react-rpg
 
-A POC 2D RPG developed with **Phaser** based on [this tutorial](https://gamedevacademy.org/how-to-create-a-turn-based-rpg-game-in-phaser-3-part-1/), and built with **Parcel**.
+A POC 2D RPG developed with **Phaser** based on [this tutorial](https://gamedevacademy.org/how-to-create-a-turn-based-rpg-game-in-phaser-3-part-1/), using **React** for its UI, and built with **Parcel**.
 
 ![Shamelessly hotlinked screenshot](https://gamedevacademy.org/wp-content/uploads/2018/05/rpg.png)
 
