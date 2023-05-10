@@ -2,7 +2,11 @@
 
 A POC 2D RPG developed with **Phaser**, using **React** for its UI, and built with **Parcel**. The objective is to create a working simulation with several agents using LLM's as their brain.
 
-The initial code was forked from a 2 y.o. repo which I sadly lost the url. The idea was to find a working base Phaser 2D RPG game to work with, and focus on the rest of the objectives in the project. The repo I found just contains the POC of a Phaser 2D RPG game, where it only contains a player and 2 other NPC to test interactions and other functionalities.
+The initial code was forked from https://github.com/neemzy/parcel-phaser-react-rpg. 
+
+Why?
+
+The idea was to find a working base Phaser 2D RPG game to work with and focus on the rest of the objectives in the project. The repo I found just contains the POC of a Phaser 2D RPG game, where it only contains a player and 2 other NPC to test interactions and other functionalities.
 
 ## Limitations
 
