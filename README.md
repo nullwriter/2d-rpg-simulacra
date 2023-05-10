@@ -1,4 +1,4 @@
-# parcel-phaser-react-rpg
+# 2D-rpg-simulacra
 
 A POC 2D RPG developed with **Phaser**, using **React** for its UI, and built with **Parcel**. The objective is to create a working simulation with several agents using LLM's as their brain.
 
