@@ -231,9 +231,10 @@ export default new Phaser.Class({
     this.actionKey = this.input.keyboard.addKey("space");
 
     // Camera
-    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-    this.cameras.main.startFollow(this.player);
+    this.cameras.main.setBounds(0, 0, grass.width * grass.scaleX, grass.height * grass.scaleY);
     this.cameras.main.roundPixels = true; // hmmmmm
+    this.cameraDolly = new Phaser.Geom.Point(this.player.x, this.player.y);
+    this.cameras.main.startFollow(this.cameraDolly);
 
     // Player animation
     this.createPlayerAnimation("side", [1, 7, 1, 13]);
@@ -283,5 +284,7 @@ export default new Phaser.Class({
     this.eventZones.children.entries.forEach(zone => zone.reset());
     this.itemZones.children.entries.forEach(zone => zone.reset());
     this.encounterZones.children.entries.forEach(zone => zone.reset());
+    this.cameraDolly.x = Math.floor(this.player.x);
+    this.cameraDolly.y = Math.floor(this.player.y);
   }
 });

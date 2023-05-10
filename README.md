@@ -1,8 +1,6 @@
 # parcel-phaser-react-rpg
 
-A POC 2D RPG developed with **Phaser** based on [this tutorial](https://gamedevacademy.org/how-to-create-a-turn-based-rpg-game-in-phaser-3-part-1/), using **React** for its UI, and built with **Parcel**.
-
-![Shamelessly hotlinked screenshot](https://gamedevacademy.org/wp-content/uploads/2018/05/rpg.png)
+A POC 2D RPG developed with **Phaser**, using **React** for its UI, and built with **Parcel**.
 
 ## Usage
 
@@ -25,3 +23,16 @@ Build the production version:
 $ npm run build
 $ npx http-server dist
 ```
+
+## Roadmap
+
+- [ ] Create base 2D game framework
+    - [ ] Finish setting up players (agents); bounding box, movement, dynamic add/remove, metadata
+    - [ ] Add logic for moving from one place to another
+    - [ ] Add objects and buildings with state
+- [ ] Memory logic for agents
+- [ ] Add vector database
+- [ ] Implement "observation" for agents: they sense the world (object states, other agents)
+- [ ] Add LLM wrapper initially supporting only OpenAI
+- ...
+
