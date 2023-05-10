@@ -2,6 +2,8 @@
 
 A POC 2D RPG developed with **Phaser**, using **React** for its UI, and built with **Parcel**. The objective is to create a working simulation with several agents using LLM's as their brain.
 
+The paper this is based on: https://arxiv.org/abs/2304.03442
+
 The initial code was forked from https://github.com/neemzy/parcel-phaser-react-rpg. 
 
 Why?
