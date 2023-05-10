@@ -36,6 +36,8 @@ $ npx http-server dist
     - [ ] Finish setting up players (agents); bounding box, movement, dynamic add/remove, metadata
     - [ ] Add logic for moving from one place to another
     - [ ] Add objects and buildings with state
+- [ ] Create world state logic
+- [ ] Create debug UI to see world state (agents, interations)
 - [ ] Memory logic for agents
 - [ ] Add vector database
 - [ ] Implement "observation" for agents: they sense the world (object states, other agents)
