@@ -48,5 +48,13 @@ $ npx http-server dist
 - [ ] Add vector database
 - [ ] Implement "observation" for agents: they sense the world (object states, other agents)
 - [ ] Add LLM wrapper initially supporting only OpenAI
-...
+
+
+More to be added.
+
+## Inspirations
+
+- Generative Agents: Interactive Simulacra of Human Behavior
+- Sword Art Online: Alicization
+- Westworld
 
