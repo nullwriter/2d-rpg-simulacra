@@ -6,6 +6,7 @@ import FramedSprite from "../objects/FramedSprite";
 
 const VELOCITY = 80;
 const ITEM_PADDING = 10;
+const speedDiag = VELOCITY * (1/1.64);
 
 const EVENTS = [
   {
@@ -276,6 +277,18 @@ export default new Phaser.Class({
     } else if (this.cursorKeys.down.isDown) {
       this.player.anims.play("down", true);
       this.player.flipX = false;
+    } else if (this.cursorKeys.left.isDown && this.cursorKeys.up.isDown) {
+      this.player.body.setVelocityX(-speedDiag);
+      this.player.body.setVelocityY(-speedDiag);
+    } else if (this.cursorKeys.right.isDown && this.cursorKeys.up.isDown) {
+      this.player.body.setVelocityX(speedDiag);
+      this.player.body.setVelocityY(-speedDiag);
+    } else if (this.cursorKeys.left.isDown && this.cursorKeys.down.isDown) {
+      this.player.body.setVelocityX(-speedDiag);
+      this.player.body.setVelocityY(speedDiag);
+    } else if (this.cursorKeys.right.isDown && this.cursorKeys.down.isDown) {
+      this.player.body.setVelocityX(speedDiag);
+      this.player.body.setVelocityY(speedDiag);
     } else {
       this.player.anims.stop();
     }
