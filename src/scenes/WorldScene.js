@@ -3,6 +3,7 @@ import { renderUI } from "../main";
 import EncounterZone from "../objects/EncounterZone";
 import EventZone from "../objects/EventZone";
 import FramedSprite from "../objects/FramedSprite";
+import AgentNPC from "../npc/base/AgentNPC";
 
 const VELOCITY = 80;
 const ITEM_PADDING = 10;
@@ -70,6 +71,27 @@ const ENCOUNTERS = [
   }
 ];
 
+const AGENTS = [
+  {
+    x: 200,
+    y: 50,
+    texture: "player",
+    frames: { up: 6, down: 4, side: 5 },
+    startFrameKey: "up",
+    startFlipX: true,
+    key: "villager_1",
+  },
+  {
+    x: 100,
+    y: 50,
+    texture: "player",
+    frames: { up: 24, down: 22, side: 23 },
+    startFrameKey: "side",
+    startFlipX: true,
+    key: "villager_2",
+  }
+];
+
 function triggerZone(player, zone) {
   zone.trigger();
 }
@@ -125,6 +147,21 @@ export default new Phaser.Class({
     );
 
     this.physics.add.overlap(this.player, this.eventZones, triggerZone, false, this);
+  },
+
+  // createAgentNPCs function that creates NPCs from a list received from parameter
+  createAgentNPCs(npcs, obstacles, obstaclesTrees) {
+    this.agentNpcs = this.physics.add.group({ classType: AgentNPC });
+
+    npcs.forEach(({ x, y, texture, frames, startFrameKey, startFlipX, onInteract }) => {
+      const sprite = new AgentNPC(this, x, y, texture, frames, startFrameKey);
+      this.agentNpcs.add(sprite, true);
+      this.physics.add.collider(sprite, obstacles);
+      this.physics.add.collider(sprite, obstaclesTrees);
+    });
+
+    this.physics.add.collider(this.player, this.agentNpcs);
+    this.physics.add.collider(this.agentNpcs, this.agentNpcs);
   },
 
   createItems(items) {
@@ -246,9 +283,10 @@ export default new Phaser.Class({
     this.createPlayerAnimation("down", [0, 6, 0, 12]);
 
     // World elements
-    this.createEvents(EVENTS);
-    this.createItems(ITEMS);
-    this.createEncounters(ENCOUNTERS);
+    // this.createEvents(EVENTS);
+    // this.createItems(ITEMS);
+    // this.createEncounters(ENCOUNTERS);
+    this.createAgentNPCs(AGENTS, obstacles, obstaclesTrees);
   },
 
   update(/*time, delta*/) {
@@ -297,9 +335,9 @@ export default new Phaser.Class({
     }
 
     // Reset event zone overlaps
-    this.eventZones.children.entries.forEach(zone => zone.reset());
-    this.itemZones.children.entries.forEach(zone => zone.reset());
-    this.encounterZones.children.entries.forEach(zone => zone.reset());
+    // this.eventZones.children.entries.forEach(zone => zone.reset());
+    // this.itemZones.children.entries.forEach(zone => zone.reset());
+    // this.encounterZones.children.entries.forEach(zone => zone.reset());
     this.cameraDolly.x = Math.floor(this.player.x);
     this.cameraDolly.y = Math.floor(this.player.y);
   }
