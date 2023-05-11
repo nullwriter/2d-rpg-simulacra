@@ -9,8 +9,8 @@ import UI from "./ui/UI";
 const game = new Phaser.Game({
   type: Phaser.AUTO,
   parent: "game",
-  width: 320,
-  height: 240,
+  width: 520,
+  height: 340,
   zoom: 2,
   pixelArt: true,
 

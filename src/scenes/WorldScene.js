@@ -210,12 +210,13 @@ export default new Phaser.Class({
 
   create() {
     // Map
-    const map = this.make.tilemap({ key: "map" });
-    const tiles = map.addTilesetImage("spritesheet", "tiles"); // "tiles": resource name
+    const map = this.make.tilemap({ key: "SereneVillage2" });
+    const tiles = map.addTilesetImage("SereneVillage2", "tiles"); // "tiles": resource name
 
     // "grass" and "obstacles" are layer names in map.json
-    const grass = map.createStaticLayer("grass", tiles, 0, 0);
-    const obstacles = map.createStaticLayer("obstacles", tiles, 0, 0);
+    const grass = map.createStaticLayer("Grass", tiles);
+    const obstacles = map.createStaticLayer("Water", tiles);
+    const obstaclesTrees = map.createStaticLayer("Trees", tiles);
 
     // Player
     this.player = this.physics.add.sprite(100, 100, "player", 6); // "player": resource name
@@ -225,7 +226,9 @@ export default new Phaser.Class({
     this.physics.world.bounds.height = map.heightInPixels;
     this.player.setCollideWorldBounds(true);
     obstacles.setCollisionByExclusion([-1]);
+    obstaclesTrees.setCollisionByExclusion([-1]);
     this.physics.add.collider(this.player, obstacles);
+    this.physics.add.collider(this.player, obstaclesTrees);
 
     // Keyboard
     this.cursorKeys = this.input.keyboard.createCursorKeys();
