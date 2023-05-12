@@ -30,6 +30,44 @@ export default class Villager extends AgentNPC {
           });
     }
 
+    moveSide(velocity) {
+        this.body.setVelocityX(velocity);
+        this.anims.play('npc_side', true);
+        this.flipX = velocity < 0;
+    }
+
+    moveUp(velocity) {
+        this.body.setVelocityY(velocity);
+        this.anims.play('npc_up', true);
+    }
+
+    moveDown(velocity) {
+        this.body.setVelocityY(velocity);
+        this.anims.play('npc_down', true);
+    }
+
+    randomWander() {
+        const randNumber = Math.floor((Math.random() * 4) + 1);
+        const randSpeed = Math.floor((Math.random() * 100) + 10);
+  
+        switch(randNumber) {
+          case 1:
+            this.moveSide(randSpeed);
+            break;
+          case 2:
+            this.moveSide(-1 * randSpeed);
+            break;
+          case 3:
+            this.moveDown(randSpeed)
+            break;
+          case 4:
+            this.moveUp(-1 * randSpeed);
+            break;
+          default:
+            this.moveSide(randSpeed);
+        }
+    }
+
     // Phaser update function for this NPC, should update animations, flags for where it's going, etc.
     update() {
        console.log('update villager = ' + this.key);

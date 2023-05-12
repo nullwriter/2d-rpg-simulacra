@@ -164,7 +164,7 @@ export default new Phaser.Class({
       var enemy = this.spawns.create(x, y, 'agent-1', [3, 9, 3, 15], 3, 'npc_agent_1');
       enemy.body.setCollideWorldBounds(true);
       enemy.body.setImmovable();
-      
+
       this.physics.add.collider(enemy, obstacles);
       this.physics.add.collider(enemy, obstaclesTrees);
     }
@@ -264,36 +264,9 @@ export default new Phaser.Class({
 
   moveEnemies () {
     this.spawns.getChildren().forEach((enemy) => {
-      const randNumber = Math.floor((Math.random() * 4) + 1);
-      const randSpeed = Math.floor((Math.random() * 100) + 10);
-
-      switch(randNumber) {
-        case 1:
-          enemy.body.setVelocityX(randSpeed);
-          enemy.anims.play("npc_side", true);
-          enemy.flipX = false;
-          break;
-        case 2:
-          enemy.body.setVelocityX(-1 * randSpeed);
-          enemy.anims.play("npc_side", true);
-          enemy.flipX = true;
-          break;
-        case 3:
-          enemy.body.setVelocityY(randSpeed);
-          enemy.anims.play("npc_down", true);
-          enemy.flipX = false;
-          break;
-        case 4:
-          enemy.anims.play("npc_up", true);
-          enemy.flipX = false;
-          enemy.body.setVelocityY(-1 * randSpeed);
-          break;
-        default:
-          enemy.body.setVelocityX(randSpeed);
-          enemy.anims.play("npc_side", true);
-          enemy.flipX = false;
-      }
+      enemy.randomWander();
     });
+    
     setTimeout(() => {
       this.spawns.setVelocityX(0);
       this.spawns.setVelocityY(0);
