@@ -13,15 +13,13 @@ export default class Villager extends AgentNPC {
         super(scene, x, y, texture, frames, startFrameKey, key);
         this.frames = frames;
 
-        this.body.setCollideWorldBounds(true);
-        this.body.setImmovable();
-        this.setFrame(3);
-
         // loop through walk anims and do createAnimations
         this.createAnimations("npc_up", this.walkAnims.npc_up, texture);
         this.createAnimations("npc_down", this.walkAnims.npc_down, texture);
         this.createAnimations("npc_side", this.walkAnims.npc_side, texture);
         this.createAnimations("npc_idle", this.walkAnims.npc_idle, texture);
+        
+        this.setFrame(3);
     }
 
     createAnimations(key, frames, sprite) {

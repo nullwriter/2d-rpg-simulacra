@@ -161,7 +161,10 @@ export default new Phaser.Class({
       const x = 100 * 1;
       let y = 20 * i;
       // parameters are x, y, width, height
-      var enemy = this.spawns.create(x, y, 'agent-1', [3, 9, 3, 15], 3, 'npc_agent_'+i);
+      var enemy = this.spawns.create(x, y, 'agent-1', [3, 9, 3, 15], 3, 'npc_agent_1');
+      enemy.body.setCollideWorldBounds(true);
+      enemy.body.setImmovable();
+      
       this.physics.add.collider(enemy, obstacles);
       this.physics.add.collider(enemy, obstaclesTrees);
     }
