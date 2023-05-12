@@ -3,7 +3,6 @@ import { renderUI } from "../main";
 import EncounterZone from "../objects/EncounterZone";
 import EventZone from "../objects/EventZone";
 import FramedSprite from "../objects/FramedSprite";
-import AgentNPC from "../npc/base/AgentNPC";
 import Villager from "../npc/Villager";
 
 const VELOCITY = 80;
@@ -161,7 +160,8 @@ export default new Phaser.Class({
       const x = 100 * 1;
       let y = 20 * i;
       // parameters are x, y, width, height
-      var enemy = this.spawns.create(x, y, 'agent-1', [3, 9, 3, 15], 3, 'npc_agent_1');
+      var enemy = this.spawns.create(x, y, 'agent-1', [3, 9, 3, 15], 3);
+      enemy.init('npc_agent_'+i);
       enemy.body.setCollideWorldBounds(true);
       enemy.body.setImmovable();
 
@@ -266,7 +266,7 @@ export default new Phaser.Class({
     this.spawns.getChildren().forEach((enemy) => {
       enemy.randomWander();
     });
-    
+
     setTimeout(() => {
       this.spawns.setVelocityX(0);
       this.spawns.setVelocityY(0);
@@ -320,7 +320,7 @@ export default new Phaser.Class({
     this.createAgentNPCs(AGENTS, obstacles, obstaclesTrees);
   },
 
-  update(/*time, delta*/) {
+  update(time, delta) {
     // Player movement
     this.player.body.setVelocity(0);
 
@@ -371,5 +371,11 @@ export default new Phaser.Class({
     // this.encounterZones.children.entries.forEach(zone => zone.reset());
     this.cameraDolly.x = Math.floor(this.player.x);
     this.cameraDolly.y = Math.floor(this.player.y);
+    
+
+    // update all spawns
+    this.spawns.getChildren().forEach((enemy) => {
+      enemy.update(time);
+    });
   }
 });

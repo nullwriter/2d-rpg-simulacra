@@ -9,16 +9,33 @@ export default class Villager extends AgentNPC {
         npc_idle: [3, 9, 3, 15]
     };
 
-    constructor(scene, x, y, texture, frames, startFrameKey, key) {
-        super(scene, x, y, texture, frames, startFrameKey, key);
-        this.frames = frames;
+    constructor(scene, x, y, texture, frames, startFrameKey) {
+        super(scene, x, y, texture, frames, startFrameKey);
+        this.setFrame(startFrameKey);
+        this.init();
+    }
+
+    init(key) {
+
+        this.setKey(key);
 
         // create animations
         for(const [key, val] of Object.entries(this.walkAnims)) {
-            this.createAnimations(key, val, texture);
+            this.createAnimations(key, val, this.spriteTexture);
         }
 
-        this.setFrame(3);
+        // create text object
+        this.hoverText = this.scene.add.text(
+            this.x, 
+            this.y, 
+            this.npcKey, 
+            {
+                fontFamily: 'Arial',
+                fontSize: '8px',
+                color: '#000000',
+                padding: { x: 5, y: 3 },
+            }
+        );
     }
 
     createAnimations(key, frames, sprite) {
@@ -68,9 +85,15 @@ export default class Villager extends AgentNPC {
         }
     }
 
-    // Phaser update function for this NPC, should update animations, flags for where it's going, etc.
-    update() {
-       console.log('update villager = ' + this.key);
+    updateHoverTextPosition() {
+        this.hoverText.setPosition(
+            this.x - this.hoverText.width / 2,
+            this.y - this.height - this.hoverText.height / 2
+        );
+    }
+
+    update(time) {
+       this.updateHoverTextPosition();
     }
 
 }
