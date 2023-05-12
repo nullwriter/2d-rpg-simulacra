@@ -12,7 +12,6 @@ export default class Villager extends AgentNPC {
     constructor(scene, x, y, texture, frames, startFrameKey) {
         super(scene, x, y, texture, frames, startFrameKey);
         this.setFrame(startFrameKey);
-        this.init();
     }
 
     init(key) {
