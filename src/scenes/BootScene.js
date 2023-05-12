@@ -14,6 +14,7 @@ export default new Phaser.Class({
     this.load.image("tiles", tiles);
     this.load.tilemapTiledJSON("SereneVillage2", map);
     this.load.spritesheet("player", player, { frameWidth: 16, frameHeight: 16 });
+    this.load.spritesheet("agent-1", player, { frameWidth: 16, frameHeight: 16 });
   },
 
   create() {

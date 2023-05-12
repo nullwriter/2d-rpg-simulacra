@@ -75,7 +75,7 @@ const AGENTS = [
   {
     x: 200,
     y: 50,
-    texture: "player",
+    texture: "agent-1",
     frames: { up: 6, down: 4, side: 5 },
     startFrameKey: "up",
     startFlipX: true,
@@ -84,7 +84,7 @@ const AGENTS = [
   {
     x: 100,
     y: 50,
-    texture: "player",
+    texture: "agent-1",
     frames: { up: 24, down: 22, side: 23 },
     startFrameKey: "side",
     startFlipX: true,
@@ -105,12 +105,13 @@ export default new Phaser.Class({
 
   initialize() {
     Phaser.Scene.call(this, { key: "WorldScene" });
+    this.time 
   },
 
-  createPlayerAnimation(key, frames) {
+  createPlayerAnimation(key, frames, sprite) {
     this.anims.create({
       key,
-      frames: this.anims.generateFrameNumbers("player", { frames }),
+      frames: this.anims.generateFrameNumbers(sprite, { frames }),
       frameRate: 10,
       repeat: -1
     });
@@ -151,17 +152,50 @@ export default new Phaser.Class({
 
   // createAgentNPCs function that creates NPCs from a list received from parameter
   createAgentNPCs(npcs, obstacles, obstaclesTrees) {
-    this.agentNpcs = this.physics.add.group({ classType: AgentNPC });
+    // this.agentNpcs = this.physics.add.group({ classType: AgentNPC });
 
-    npcs.forEach(({ x, y, texture, frames, startFrameKey, startFlipX, onInteract }) => {
-      const sprite = new AgentNPC(this, x, y, texture, frames, startFrameKey);
-      this.agentNpcs.add(sprite, true);
-      this.physics.add.collider(sprite, obstacles);
-      this.physics.add.collider(sprite, obstaclesTrees);
+    // npcs.forEach(({ x, y, texture, frames, startFrameKey, startFlipX, onInteract }) => {
+    //   const sprite = new AgentNPC(this, x, y, texture, frames, startFrameKey);
+    //   this.agentNpcs.add(sprite, true);
+    //   this.physics.add.collider(sprite, obstacles);
+    //   this.physics.add.collider(sprite, obstaclesTrees);
+    // });
+
+    // this.physics.add.collider(this.player, this.agentNpcs);
+    // this.physics.add.collider(this.agentNpcs, this.agentNpcs);
+
+     // where the enemies will be
+    this.spawns = this.physics.add.group({
+      classType: Phaser.GameObjects.Sprite
     });
 
-    this.physics.add.collider(this.player, this.agentNpcs);
-    this.physics.add.collider(this.agentNpcs, this.agentNpcs);
+    for (var i = 1; i < 5; i++) {
+      const x = 100 * 1;
+      let y = 20 * i;
+      // parameters are x, y, width, height
+      var enemy = this.spawns.create(x, y, 'agent-1');
+      enemy.body.setCollideWorldBounds(true);
+      enemy.body.setImmovable();
+      enemy.setFrame(3);
+      this.physics.add.collider(enemy, obstacles);
+      this.physics.add.collider(enemy, obstaclesTrees);
+    }
+
+    this.physics.add.collider(this.player, this.spawns);
+    this.physics.add.collider(this.spawns, this.spawns);
+
+    this.createPlayerAnimation("npc_side", [4, 10, 4, 16], 'agent-1');
+    this.createPlayerAnimation("npc_up", [5, 11, 5, 17], 'agent-1');
+    this.createPlayerAnimation("npc_down", [3, 9, 3, 15], 'agent-1');
+    this.createPlayerAnimation("npc_idle", [3, 9, 3, 15], 'agent-1');
+
+    // move enemies
+    this.timedEvent = this.time.addEvent({
+      delay: 3000,
+      callback: this.moveEnemies,
+      callbackScope: this,
+      loop: true
+    });
   },
 
   createItems(items) {
@@ -245,6 +279,47 @@ export default new Phaser.Class({
     });
   },
 
+  moveEnemies () {
+    this.spawns.getChildren().forEach((enemy) => {
+      const randNumber = Math.floor((Math.random() * 4) + 1);
+      const randSpeed = Math.floor((Math.random() * 100) + 10);
+
+      switch(randNumber) {
+        case 1:
+          enemy.body.setVelocityX(randSpeed);
+          enemy.anims.play("npc_side", true);
+          enemy.flipX = false;
+          break;
+        case 2:
+          enemy.body.setVelocityX(-1 * randSpeed);
+          enemy.anims.play("npc_side", true);
+          enemy.flipX = true;
+          break;
+        case 3:
+          enemy.body.setVelocityY(randSpeed);
+          enemy.anims.play("npc_down", true);
+          enemy.flipX = false;
+          break;
+        case 4:
+          enemy.anims.play("npc_up", true);
+          enemy.flipX = false;
+          enemy.body.setVelocityY(-1 * randSpeed);
+          break;
+        default:
+          enemy.body.setVelocityX(randSpeed);
+          enemy.anims.play("npc_side", true);
+          enemy.flipX = false;
+      }
+    });
+    setTimeout(() => {
+      this.spawns.setVelocityX(0);
+      this.spawns.setVelocityY(0);
+      this.spawns.getChildren().forEach((enemy) => {
+        enemy.anims.stop();
+      });
+    }, 500);
+  },
+
   create() {
     // Map
     const map = this.make.tilemap({ key: "SereneVillage2" });
@@ -278,9 +353,9 @@ export default new Phaser.Class({
     this.cameras.main.startFollow(this.cameraDolly);
 
     // Player animation
-    this.createPlayerAnimation("side", [1, 7, 1, 13]);
-    this.createPlayerAnimation("up", [2, 8, 2, 14]);
-    this.createPlayerAnimation("down", [0, 6, 0, 12]);
+    this.createPlayerAnimation("side", [1, 7, 1, 13], 'player');
+    this.createPlayerAnimation("up", [2, 8, 2, 14], 'player');
+    this.createPlayerAnimation("down", [0, 6, 0, 12], 'player');
 
     // World elements
     // this.createEvents(EVENTS);
