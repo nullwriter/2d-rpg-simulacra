@@ -12,7 +12,7 @@ The idea was to find a working base Phaser 2D RPG game to work with and focus on
 
 ## Limitations
 
-As each agent will need to call the LLM on each update...several times, this comes as a limitation as it will consume quite a lot of tokens for OpenAI. Initially we are trying to do a POC of the paper, then we can review what best LLM to use to get the simulation running with several agents.
+As each agent will need to call several times the LLM on each game loop, this comes as a limitation as it will consume quite a lot of tokens, even when using GPT-3.5 instead of the desirable GPT-4. 
 
 ## Usage
 
