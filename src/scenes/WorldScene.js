@@ -4,6 +4,7 @@ import EncounterZone from "../objects/EncounterZone";
 import EventZone from "../objects/EventZone";
 import FramedSprite from "../objects/FramedSprite";
 import AgentNPC from "../npc/base/AgentNPC";
+import Villager from "../npc/Villager";
 
 const VELOCITY = 80;
 const ITEM_PADDING = 10;
@@ -152,42 +153,21 @@ export default new Phaser.Class({
 
   // createAgentNPCs function that creates NPCs from a list received from parameter
   createAgentNPCs(npcs, obstacles, obstaclesTrees) {
-    // this.agentNpcs = this.physics.add.group({ classType: AgentNPC });
-
-    // npcs.forEach(({ x, y, texture, frames, startFrameKey, startFlipX, onInteract }) => {
-    //   const sprite = new AgentNPC(this, x, y, texture, frames, startFrameKey);
-    //   this.agentNpcs.add(sprite, true);
-    //   this.physics.add.collider(sprite, obstacles);
-    //   this.physics.add.collider(sprite, obstaclesTrees);
-    // });
-
-    // this.physics.add.collider(this.player, this.agentNpcs);
-    // this.physics.add.collider(this.agentNpcs, this.agentNpcs);
-
-     // where the enemies will be
     this.spawns = this.physics.add.group({
-      classType: Phaser.GameObjects.Sprite
+      classType: Villager
     });
 
     for (var i = 1; i < 5; i++) {
       const x = 100 * 1;
       let y = 20 * i;
       // parameters are x, y, width, height
-      var enemy = this.spawns.create(x, y, 'agent-1');
-      enemy.body.setCollideWorldBounds(true);
-      enemy.body.setImmovable();
-      enemy.setFrame(3);
+      var enemy = this.spawns.create(x, y, 'agent-1', [3, 9, 3, 15], 3, 'npc_agent_'+i);
       this.physics.add.collider(enemy, obstacles);
       this.physics.add.collider(enemy, obstaclesTrees);
     }
 
     this.physics.add.collider(this.player, this.spawns);
     this.physics.add.collider(this.spawns, this.spawns);
-
-    this.createPlayerAnimation("npc_side", [4, 10, 4, 16], 'agent-1');
-    this.createPlayerAnimation("npc_up", [5, 11, 5, 17], 'agent-1');
-    this.createPlayerAnimation("npc_down", [3, 9, 3, 15], 'agent-1');
-    this.createPlayerAnimation("npc_idle", [3, 9, 3, 15], 'agent-1');
 
     // move enemies
     this.timedEvent = this.time.addEvent({
