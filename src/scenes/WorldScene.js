@@ -4,6 +4,7 @@ import EncounterZone from "../objects/EncounterZone";
 import EventZone from "../objects/EventZone";
 import FramedSprite from "../objects/FramedSprite";
 import Villager from "../npc/Villager";
+import EasyStar from "easystarjs";
 
 const VELOCITY = 80;
 const ITEM_PADDING = 10;
@@ -105,7 +106,6 @@ export default new Phaser.Class({
 
   initialize() {
     Phaser.Scene.call(this, { key: "WorldScene" });
-    this.time 
   },
 
   createPlayerAnimation(key, frames, sprite) {
@@ -156,7 +156,7 @@ export default new Phaser.Class({
       classType: Villager
     });
 
-    for (var i = 1; i < 5; i++) {
+    for (var i = 1; i < 2; i++) {
       const x = 100 * 1;
       let y = 20 * i;
       // parameters are x, y, width, height
@@ -264,7 +264,7 @@ export default new Phaser.Class({
 
   moveEnemies () {
     this.spawns.getChildren().forEach((enemy) => {
-      enemy.randomWander();
+      // enemy.randomWander();
     });
 
     setTimeout(() => {
@@ -278,25 +278,45 @@ export default new Phaser.Class({
 
   create() {
     // Map
-    const map = this.make.tilemap({ key: "SereneVillage2" });
-    const tiles = map.addTilesetImage("SereneVillage2", "tiles"); // "tiles": resource name
+    this.map = this.make.tilemap({ key: "SereneVillage2" });
+    const tiles = this.map.addTilesetImage("SereneVillage2", "tiles"); // "tiles": resource name
 
     // "grass" and "obstacles" are layer names in map.json
-    const grass = map.createStaticLayer("Grass", tiles);
-    const obstacles = map.createStaticLayer("Water", tiles);
-    const obstaclesTrees = map.createStaticLayer("Trees", tiles);
+    const grass = this.map.createStaticLayer("Grass", tiles);
+    const obstacles = this.map.createStaticLayer("Obstacles", tiles);
+
+    this.collisionLayer = obstacles;
 
     // Player
     this.player = this.physics.add.sprite(100, 100, "player", 6); // "player": resource name
 
     // Collision
-    this.physics.world.bounds.width = map.widthInPixels;
-    this.physics.world.bounds.height = map.heightInPixels;
+    this.physics.world.bounds.width = this.map.widthInPixels;
+    this.physics.world.bounds.height = this.map.heightInPixels;
     this.player.setCollideWorldBounds(true);
     obstacles.setCollisionByExclusion([-1]);
-    obstaclesTrees.setCollisionByExclusion([-1]);
     this.physics.add.collider(this.player, obstacles);
-    this.physics.add.collider(this.player, obstaclesTrees);
+
+    // Set up easystar js
+    this.easystar = new EasyStar.js();
+    
+    // Set up easystar grid with obstacles
+    const grid = [];
+    for (let y = 0; y < this.map.height; y++) {
+      const col = [];
+      for (let x = 0; x < this.map.width; x++) {
+        const tile = this.map.getTileAt(x, y, true, "Obstacles");
+        col.push(tile ? tile.index : 0);
+      }
+      grid.push(col);
+    }
+    
+    console.log("grid");
+    console.log(grid);
+
+    this.easystar.setGrid(grid);
+    this.easystar.setAcceptableTiles([-1]);
+    this.easystar.enableDiagonals();
 
     // Keyboard
     this.cursorKeys = this.input.keyboard.createCursorKeys();
@@ -314,10 +334,10 @@ export default new Phaser.Class({
     this.createPlayerAnimation("down", [0, 6, 0, 12], 'player');
 
     // World elements
-    // this.createEvents(EVENTS);
-    // this.createItems(ITEMS);
-    // this.createEncounters(ENCOUNTERS);
-    this.createAgentNPCs(AGENTS, obstacles, obstaclesTrees);
+    this.createAgentNPCs(AGENTS, obstacles);
+
+    // Pointer: grab the pointer of game input
+    this.pointer = this.input.activePointer;
   },
 
   update(time, delta) {
@@ -375,7 +395,7 @@ export default new Phaser.Class({
 
     // update all spawns
     this.spawns.getChildren().forEach((enemy) => {
-      enemy.update(time);
+      enemy.update(time, delta, this.pointer);
     });
   }
 });
