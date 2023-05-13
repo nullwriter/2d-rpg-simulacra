@@ -26,10 +26,6 @@ export default class AgentNPC extends Phaser.GameObjects.Sprite {
         }
     }
 
-    setKey(key) {
-        this.npcKey = key;
-    }
-
     update(time, delta, pointer) {
         // if the pointer is down, move to the pointer using easystar
         if (pointer.isDown) {
@@ -72,7 +68,6 @@ export default class AgentNPC extends Phaser.GameObjects.Sprite {
     }
 
     moveNPC(path) {
-        console.log('debug path = ' + this.debugPath);
         if(this.debugPath){
             this.showPath(path);
         }
