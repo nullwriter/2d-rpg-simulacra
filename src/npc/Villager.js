@@ -14,9 +14,8 @@ export default class Villager extends AgentNPC {
         this.setFrame(startFrameKey);
     }
 
-    init(key) {
-
-        this.setKey(key);
+    init(key, debugPath = false) {
+        super.init(key, debugPath);
 
         // create animations
         for(const [key, val] of Object.entries(this.walkAnims)) {
@@ -92,49 +91,8 @@ export default class Villager extends AgentNPC {
     }
 
     update(time, delta, pointer) {
-       this.updateHoverTextPosition();
-
-       // if the pointer is down, move to the pointer using easystar
-        if (pointer.isDown) {
-            const cameraPointerX = pointer.x + this.scene.cameras.main.scrollX;
-            const cameraPointerY = pointer.y + this.scene.cameras.main.scrollY;
-            const targetTileX = Math.floor(cameraPointerX / this.scene.map.tileWidth);
-            const targetTileY = Math.floor(cameraPointerY / this.scene.map.tileHeight);
-        
-            console.log(`targetTileX: ${targetTileX}, targetTileY: ${targetTileY}`);
-
-            const npcTileX = Math.floor(this.x / this.scene.map.tileWidth);
-            const npcTileY = Math.floor(this.y / this.scene.map.tileHeight);
-
-            console.log(`npcTileX: ${npcTileX}, npcTileY: ${npcTileY}`);
-
-            this.scene.easystar.findPath(npcTileX, npcTileY, targetTileX, targetTileY, newPath => {
-                if (newPath !== null) {
-                    this.moveNPC(newPath);
-                } else {
-                    console.warn("Path was not found.");
-                }
-            });
-
-            this.scene.easystar.calculate();
-        }
-    }
-
-    moveNPC(path) {
-        var tweens = [];
-        for(var i = 0; i < path.length-1; i++){
-            var ex = path[i+1].x;
-            var ey = path[i+1].y;
-            tweens.push({
-                targets: this,
-                x: {value: ex * this.scene.map.tileWidth, duration: 200},
-                y: {value: ey * this.scene.map.tileHeight, duration: 200}
-            });
-        }
-
-        this.scene.tweens.timeline({
-            tweens: tweens
-        });
+        super.update(time, delta, pointer);
+        this.updateHoverTextPosition();
     }
 
 }

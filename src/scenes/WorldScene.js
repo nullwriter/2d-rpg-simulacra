@@ -161,7 +161,7 @@ export default new Phaser.Class({
       let y = 20 * i;
       // parameters are x, y, width, height
       var enemy = this.spawns.create(x, y, 'agent-1', [3, 9, 3, 15], 3);
-      enemy.init('npc_agent_'+i);
+      enemy.init('npc_agent_'+i, true);
       enemy.body.setCollideWorldBounds(true);
       enemy.body.setImmovable();
 
@@ -316,7 +316,6 @@ export default new Phaser.Class({
 
     this.easystar.setGrid(grid);
     this.easystar.setAcceptableTiles([-1]);
-    this.easystar.enableDiagonals();
 
     // Keyboard
     this.cursorKeys = this.input.keyboard.createCursorKeys();
