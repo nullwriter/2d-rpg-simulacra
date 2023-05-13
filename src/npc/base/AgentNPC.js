@@ -14,6 +14,7 @@ export default class AgentNPC extends Phaser.GameObjects.Sprite {
 
         this.maxHP = 100;
         this.hp = this.maxHP;
+        this.speed = 50;
     }
 
     init(key, debugPath = false){
@@ -76,15 +77,40 @@ export default class AgentNPC extends Phaser.GameObjects.Sprite {
         for(var i = 0; i < path.length-1; i++){
             var ex = path[i+1].x;
             var ey = path[i+1].y;
+            let direction = this.getDirection(path[i], path[i+1]);
+
+            // Calculate the distance between two points
+            let distance = this.scene.map.tileWidth; // Assuming constant distance between tiles
+
+            // Calculate the duration based on the distance and speed
+            let duration = (distance / this.speed) * 1000; // Convert from seconds to milliseconds
+
             tweens.push({
                 targets: this,
-                x: {value: ex * this.scene.map.tileWidth, duration: 200},
-                y: {value: ey * this.scene.map.tileHeight, duration: 200}
+                x: {value: ex * this.scene.map.tileWidth, duration},
+                y: {value: ey * this.scene.map.tileHeight, duration},
+                onStart: () => {
+                    this.play(direction);
+                },
             });
         }
 
         this.scene.tweens.timeline({
             tweens: tweens
         });
+    }
+
+    getDirection(start, end){
+        if(start.x < end.x){
+            return "npc_right";
+        } else if(start.x > end.x){
+            return "npc_left";
+        } else if(start.y < end.y){
+            return "npc_down";
+        } else if(start.y > end.y){
+            return "npc_up";
+        } else {
+            return "npc_idle";
+        }
     }
 }

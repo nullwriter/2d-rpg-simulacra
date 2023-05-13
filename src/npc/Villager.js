@@ -3,10 +3,11 @@ import AgentNPC from "./base/AgentNPC";
 export default class Villager extends AgentNPC {
 
     walkAnims = {
-        npc_up: [5, 11, 5, 17],
-        npc_down: [3, 9, 3, 15],
-        npc_side: [4, 10, 4, 16],
-        npc_idle: [3, 9, 3, 15]
+        npc_up: [9, 10, 11],
+        npc_down: [0, 1, 2],
+        npc_left: [3, 4, 5],
+        npc_right: [6, 7, 8],
+        npc_idle: [0],
     };
 
     constructor(scene, x, y, texture, frames, startFrameKey) {

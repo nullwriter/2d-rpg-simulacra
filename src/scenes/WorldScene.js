@@ -328,9 +328,9 @@ export default new Phaser.Class({
     this.cameras.main.startFollow(this.cameraDolly);
 
     // Player animation
-    this.createPlayerAnimation("side", [1, 7, 1, 13], 'player');
-    this.createPlayerAnimation("up", [2, 8, 2, 14], 'player');
-    this.createPlayerAnimation("down", [0, 6, 0, 12], 'player');
+    this.createPlayerAnimation("side", [6, 7, 8], 'player');
+    this.createPlayerAnimation("up", [9, 10, 11], 'player');
+    this.createPlayerAnimation("down", [0, 1, 2], 'player');
 
     // World elements
     this.createAgentNPCs(AGENTS, obstacles);
