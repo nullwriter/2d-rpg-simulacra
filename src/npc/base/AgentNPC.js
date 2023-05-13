@@ -14,7 +14,7 @@ export default class AgentNPC extends Phaser.GameObjects.Sprite {
 
         this.maxHP = 100;
         this.hp = this.maxHP;
-        this.speed = 50;
+        this.speed = 80;
     }
 
     init(key, debugPath = false){
@@ -92,6 +92,9 @@ export default class AgentNPC extends Phaser.GameObjects.Sprite {
                 onStart: () => {
                     this.play(direction);
                 },
+                onComplete: (i === path.length - 2) ? () => {
+                    this.anims.stop();
+                } : null
             });
         }
 
