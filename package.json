@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "start": "rm -rf .parcel-cache && parcel src/index.html",
+    "watch": "parcel watch src/index.html --no-cache",
     "build": "parcel build src/index.html"
   },
   "alias": {

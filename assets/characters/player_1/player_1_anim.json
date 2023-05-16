@@ -1,0 +1,208 @@
+{
+    "anims": [
+        {
+            "key": "idle_side",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 5,
+            "frames": [
+                {
+                    "key": "player_1",
+                    "frame": "tile000"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile001"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile002"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile003"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile005"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile007"
+                }
+            ]
+        },
+        {
+            "key": "idle_up",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 5,
+            "frames": [
+                {
+                    "key": "player_1",
+                    "frame": "tile016"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile018"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile019"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile021"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile023"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile021"
+                }
+            ]
+        },
+        {
+            "key": "idle_down",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 5,
+            "frames": [
+                {
+                    "key": "player_1",
+                    "frame": "tile008"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile009"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile010"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile008"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile008"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile009"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile010"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile011"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile013"
+                }
+            ]
+        },
+        {
+            "key": "walk_down",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "player_1",
+                    "frame": "tile008"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile012"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile013"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile014"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile015"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile012"
+                }
+            ]
+        },
+        {
+            "key": "walk_up",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "player_1",
+                    "frame": "tile016"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile020"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile021"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile022"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile021"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile020"
+                }
+            ]
+        },
+        {
+            "key": "walk_side",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "player_1",
+                    "frame": "tile000"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile004"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile005"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile006"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile007"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile004"
+                }
+            ]
+        }
+    ]
+}

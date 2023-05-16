@@ -108,15 +108,6 @@ export default class WorldScene extends Phaser.Scene {
     super({ key: "WorldScene" });
   }
 
-  createPlayerAnimation(key, frames, sprite) {
-    this.anims.create({
-      key,
-      frames: this.anims.generateFrameNumbers(sprite, { frames }),
-      frameRate: 10,
-      repeat: -1
-    });
-  }
-
   rotateTowardsPlayer(sprite) {
     const xDiff = this.player.x - sprite.x;
     const yDiff = this.player.y - sprite.y;
@@ -274,7 +265,7 @@ export default class WorldScene extends Phaser.Scene {
     this.collisionLayer = obstaclesLayer;
 
     // Player
-    this.player = new Player(this, 100, 100, "player", 6);
+    this.player = new Player(this, 100, 100, "player_1", 'tile000');
 
     // Collision
     obstaclesLayer.setCollisionByProperty({ collides: true });
@@ -302,11 +293,6 @@ export default class WorldScene extends Phaser.Scene {
     this.cameras.main.roundPixels = true; // hmmmmm
     this.cameraDolly = new Phaser.Geom.Point(this.player.x, this.player.y);
     this.cameras.main.startFollow(this.cameraDolly);
-
-    // Player animation
-    this.createPlayerAnimation("side", [6, 7, 8], 'player');
-    this.createPlayerAnimation("up", [9, 10, 11], 'player');
-    this.createPlayerAnimation("down", [0, 1, 2], 'player');
 
     // World elements
     this.createAgentNPCs(AGENTS, obstaclesLayer);
