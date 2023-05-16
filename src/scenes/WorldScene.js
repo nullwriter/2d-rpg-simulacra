@@ -162,12 +162,7 @@ export default class WorldScene extends Phaser.Scene {
       // parameters are x, y, width, height
       var enemy = this.spawns.create(x, y, 'agent-1', [3, 9, 3, 15], 3);
       enemy.init('npc_agent_'+i, true);
-      // enemy.body.setCollideWorldBounds(true);
-      // enemy.body.setImmovable();
-
-      // this.physics.add.collider(enemy, obstacles);
-      // this.physics.add.collider(enemy, obstaclesTrees);
-
+      
       this.matter.add.gameObject(enemy);
     }
   }
