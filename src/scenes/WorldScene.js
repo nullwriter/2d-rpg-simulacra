@@ -162,7 +162,7 @@ export default class WorldScene extends Phaser.Scene {
       // parameters are x, y, width, height
       var enemy = this.spawns.create(x, y, 'agent-1', [3, 9, 3, 15], 3);
       enemy.init('npc_agent_'+i, true);
-      
+
       this.matter.add.gameObject(enemy);
     }
   }
@@ -268,17 +268,17 @@ export default class WorldScene extends Phaser.Scene {
     const tiles = this.map.addTilesetImage("SereneVillage2", "tiles"); // "tiles": resource name
 
     // "grass" and "obstacles" are layer names in map.json
-    const grass = this.map.createLayer("Grass", tiles);
-    const obstacles = this.map.createLayer("Obstacles", tiles);
+    const grassLayer = this.map.createLayer("Grass", tiles);
+    const obstaclesLayer = this.map.createLayer("Obstacles", tiles);
 
-    this.collisionLayer = obstacles;
+    this.collisionLayer = obstaclesLayer;
 
     // Player
     this.player = new Player(this, 100, 100, "player", 6);
 
     // Collision
-    obstacles.setCollisionByProperty({ collides: true });
-    this.matter.world.convertTilemapLayer(obstacles);
+    obstaclesLayer.setCollisionByProperty({ collides: true });
+    this.matter.world.convertTilemapLayer(obstaclesLayer);
 
     // Set up easystar js
     this.easystar = new EasyStar.js();
@@ -298,7 +298,7 @@ export default class WorldScene extends Phaser.Scene {
     this.easystar.setAcceptableTiles([-1]);
 
     // Camera
-    this.cameras.main.setBounds(0, 0, grass.width * grass.scaleX, grass.height * grass.scaleY);
+    this.cameras.main.setBounds(0, 0, grassLayer.width * grassLayer.scaleX, grassLayer.height * grassLayer.scaleY);
     this.cameras.main.roundPixels = true; // hmmmmm
     this.cameraDolly = new Phaser.Geom.Point(this.player.x, this.player.y);
     this.cameras.main.startFollow(this.cameraDolly);
@@ -309,7 +309,7 @@ export default class WorldScene extends Phaser.Scene {
     this.createPlayerAnimation("down", [0, 1, 2], 'player');
 
     // World elements
-    this.createAgentNPCs(AGENTS, obstacles);
+    this.createAgentNPCs(AGENTS, obstaclesLayer);
 
     // Keyboard
     this.actionKey = this.input.keyboard.addKey("space");
