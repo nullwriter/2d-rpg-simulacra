@@ -1,0 +1,320 @@
+{
+    "frames": [
+        {
+            "filename": "tile072",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 1,
+                "y": 1
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile073",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 34,
+                "y": 1
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile074",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 1,
+                "y": 50
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile075",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 34,
+                "y": 50
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile076",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 67,
+                "y": 1
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile077",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 67,
+                "y": 50
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile078",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 1,
+                "y": 99
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile079",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 34,
+                "y": 99
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile080",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 67,
+                "y": 99
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile081",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 100,
+                "y": 1
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile082",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 100,
+                "y": 50
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile083",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 100,
+                "y": 99
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile084",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 133,
+                "y": 1
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile091",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 133,
+                "y": 50
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile085",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 133,
+                "y": 99
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile086",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 1,
+                "y": 148
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile087",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 34,
+                "y": 148
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile093",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 67,
+                "y": 148
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile090",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 100,
+                "y": 148
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile089",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 133,
+                "y": 148
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile088",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 166,
+                "y": 1
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile094",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 166,
+                "y": 50
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile092",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 166,
+                "y": 99
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tile095",
+            "frame": {
+                "w": 32,
+                "h": 48,
+                "x": 166,
+                "y": 148
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    ],
+    "meta": {
+        "description": "Atlas generado con Atlas Packer Gamma V2",
+        "web": "https://gammafp.github.io/atlas-packer-phaser/"
+    }
+}

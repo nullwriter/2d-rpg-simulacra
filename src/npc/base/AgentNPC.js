@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 
 export default class AgentNPC extends Phaser.Physics.Matter.Sprite {
-    constructor(scene, x, y, texture, frames, startFrameKey) {
-        super(scene.matter.world, x, y, texture, frames[startFrameKey]);
+    constructor(scene, x, y, texture, frame) {
+        super(scene.matter.world, x, y, texture, frame);
         this.scene = scene;
         this.spriteTexture = texture;
         this.maxHP = 100;
@@ -21,6 +21,7 @@ export default class AgentNPC extends Phaser.Physics.Matter.Sprite {
     }
 
     update(time, delta, pointer) {
+        this.anims.play('p2_idle_down', true);
         // if the pointer is down, move to the pointer using easystar
         if (pointer.isDown) {
             const cameraPointerX = pointer.x + this.scene.cameras.main.scrollX;
@@ -86,7 +87,7 @@ export default class AgentNPC extends Phaser.Physics.Matter.Sprite {
                     this.play(direction);
                 },
                 onComplete: (i === path.length - 2) ? () => {
-                    this.anims.stop();
+                    this.anims.play('idle_side', true);
                 } : null
             });
         }
@@ -98,15 +99,17 @@ export default class AgentNPC extends Phaser.Physics.Matter.Sprite {
 
     getDirection(start, end){
         if(start.x < end.x){
-            return "npc_right";
+            // right
+            return "p2_walk_side";
         } else if(start.x > end.x){
-            return "npc_left";
+            // left
+            return "p2_walk_side";
         } else if(start.y < end.y){
-            return "npc_down";
+            return "p2_walk_down";
         } else if(start.y > end.y){
-            return "npc_up";
+            return "p2_walk_up";
         } else {
-            return "npc_idle";
+            return "p2_idle_side";
         }
     }
 }

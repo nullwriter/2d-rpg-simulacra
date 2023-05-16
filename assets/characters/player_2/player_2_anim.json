@@ -1,0 +1,156 @@
+{
+    "anims": [
+        {
+            "key": "p2_idle_side",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "player_2",
+                    "frame": "tile072"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile073"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile074"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile075"
+                }
+            ]
+        },
+        {
+            "key": "p2_idle_down",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 5,
+            "frames": [
+                {
+                    "key": "player_2",
+                    "frame": "tile080"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile081"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile082"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile083"
+                }
+            ]
+        },
+        {
+            "key": "p2_idle_up",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 5,
+            "frames": [
+                {
+                    "key": "player_2",
+                    "frame": "tile093"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile090"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile089"
+                }
+            ]
+        },
+        {
+            "key": "p2_walk_up",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "player_2",
+                    "frame": "tile088"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile094"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile089"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile092"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile095"
+                }
+            ]
+        },
+        {
+            "key": "p2_walk_down",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "player_2",
+                    "frame": "tile083"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile084"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile082"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile086"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile087"
+                }
+            ]
+        },
+        {
+            "key": "p2_walk_side",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "player_2",
+                    "frame": "tile077"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile078"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile079"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile076"
+                },
+                {
+                    "key": "player_2",
+                    "frame": "tile075"
+                }
+            ]
+        }
+    ]
+}

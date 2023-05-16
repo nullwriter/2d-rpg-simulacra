@@ -1,27 +1,21 @@
 import AgentNPC from "./base/AgentNPC";
+import playerTwo from "../../assets/characters/player_2/player_2.png";
+import playerTwoJson from "../../assets/characters/player_2/player_2_atlas.json";
+import playerTwoAnim from "../../assets/characters/player_2/player_2_anim.json";
 
 export default class Villager extends AgentNPC {
 
-    walkAnims = {
-        npc_up: [9, 10, 11],
-        npc_down: [0, 1, 2],
-        npc_left: [3, 4, 5],
-        npc_right: [6, 7, 8],
-        npc_idle: [0],
-    };
+    constructor(scene, x, y, texture, frame) {
+        super(scene, x, y, texture, frame);
+    }
 
-    constructor(scene, x, y, texture, frames, startFrameKey) {
-        super(scene, x, y, texture, frames, startFrameKey);
-        this.setFrame(startFrameKey);
+    static preload(scene) {
+        scene.load.atlas("player_2", playerTwo, playerTwoJson);
+        scene.load.animation("player_2_anim", playerTwoAnim);
     }
 
     init(key, debugPath = false) {
         super.init(key, debugPath);
-
-        // create animations
-        for(const [key, val] of Object.entries(this.walkAnims)) {
-            this.createAnimations(key, val, this.spriteTexture);
-        }
 
         // create text object
         this.hoverText = this.scene.add.text(
@@ -35,15 +29,6 @@ export default class Villager extends AgentNPC {
                 padding: { x: 5, y: 3 },
             }
         );
-    }
-
-    createAnimations(key, frames, sprite) {
-        this.scene.anims.create({
-            key,
-            frames: this.scene.anims.generateFrameNumbers(sprite, { frames }),
-            frameRate: 10,
-            repeat: -1
-          });
     }
 
     moveSide(velocity) {

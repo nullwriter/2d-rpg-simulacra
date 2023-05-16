@@ -1,9 +1,8 @@
 import Phaser from "phaser";
 import tiles from "../../assets/map/level/WorldMapBase.png";
 import map from "../../assets/map/level/WorldMapBase.json";
-import player from "../../assets/characters/Male/Male 01-1.png";
-import agentNpc from "../../assets/characters/Male/Male 01-2.png";
 import Player from "../player/Player";
+import Villager from "../npc/Villager";
 
 export default class BootScene extends Phaser.Scene {
   constructor() {
@@ -15,9 +14,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.tilemapTiledJSON("SereneVillage2", map);
 
     Player.preload(this);
-
-    // this.load.spritesheet("player", player, { frameWidth: 32, frameHeight: 32 });
-    this.load.spritesheet("agent-1", agentNpc, { frameWidth: 32, frameHeight: 32 });
+    Villager.preload(this);
   }
 
   create() {

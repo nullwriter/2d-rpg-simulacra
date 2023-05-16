@@ -151,7 +151,7 @@ export default class WorldScene extends Phaser.Scene {
       const x = 100 * 1;
       let y = 20 * i;
       // parameters are x, y, width, height
-      var enemy = this.spawns.create(x, y, 'agent-1', [3, 9, 3, 15], 3);
+      var enemy = this.spawns.create(x, y, 'player_2', 'tile072');
       enemy.init('npc_agent_'+i, true);
 
       this.matter.add.gameObject(enemy);
