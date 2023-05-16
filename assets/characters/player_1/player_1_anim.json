@@ -24,11 +24,11 @@
                 },
                 {
                     "key": "player_1",
-                    "frame": "tile005"
+                    "frame": "tile002"
                 },
                 {
                     "key": "player_1",
-                    "frame": "tile007"
+                    "frame": "tile001"
                 }
             ]
         },
@@ -180,7 +180,7 @@
             "frames": [
                 {
                     "key": "player_1",
-                    "frame": "tile000"
+                    "frame": "tile005"
                 },
                 {
                     "key": "player_1",
@@ -201,6 +201,10 @@
                 {
                     "key": "player_1",
                     "frame": "tile004"
+                },
+                {
+                    "key": "player_1",
+                    "frame": "tile000"
                 }
             ]
         }

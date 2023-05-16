@@ -8,6 +8,7 @@ export default class Player extends Phaser.Physics.Matter.Sprite {
         super(scene.matter.world, x, y, texture, frame);
         this.scene.add.existing(this);
         this.cursorKeys = this.scene.input.keyboard.createCursorKeys();
+        this.lastAnim = "idle_side";
     }
 
     static preload(scene) {
@@ -34,19 +35,23 @@ export default class Player extends Phaser.Physics.Matter.Sprite {
 
         // Player animation
         if (this.cursorKeys.left.isDown) {
+            this.lastAnim = "walk_side";
             this.anims.play("walk_side", true);
             this.flipX = false;
         } else if (this.cursorKeys.right.isDown) {
+            this.lastAnim = "walk_side";
             this.anims.play("walk_side", true);
             this.flipX = true;
         } else if (this.cursorKeys.up.isDown) {
+            this.lastAnim = "walk_up";
             this.anims.play("walk_up", true);
             this.flipX = false;
         } else if (this.cursorKeys.down.isDown) {
+            this.lastAnim = "walk_down";
             this.anims.play("walk_down", true);
             this.flipX = false;
         } else {
-            this.anims.play('idle_side', true);
+            this.anims.play(this.lastAnim.replace("walk", "idle"), true);
         }
 
         playerVelocity.normalize();
