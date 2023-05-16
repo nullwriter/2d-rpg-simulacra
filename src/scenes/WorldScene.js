@@ -101,12 +101,11 @@ function makeImmovable(sprite) {
   sprite.body.immovable = true;
 }
 
-export default new Phaser.Class({
-  Extends: Phaser.Scene,
-
-  initialize() {
-    Phaser.Scene.call(this, { key: "WorldScene" });
-  },
+export default class WorldScene extends Phaser.Scene {
+  
+  constructor() {
+    super({ key: "WorldScene" });
+  }
 
   createPlayerAnimation(key, frames, sprite) {
     this.anims.create({
@@ -115,7 +114,7 @@ export default new Phaser.Class({
       frameRate: 10,
       repeat: -1
     });
-  },
+  }
 
   rotateTowardsPlayer(sprite) {
     const xDiff = this.player.x - sprite.x;
@@ -137,7 +136,7 @@ export default new Phaser.Class({
         sprite.flipX = true; // left
       }
     }
-  },
+  }
 
   createEvents(events) {
     this.eventZones = this.physics.add.group({ classType: EventZone });
@@ -148,11 +147,11 @@ export default new Phaser.Class({
     );
 
     this.physics.add.overlap(this.player, this.eventZones, triggerZone, false, this);
-  },
+  }
 
   // createAgentNPCs function that creates NPCs from a list received from parameter
   createAgentNPCs(npcs, obstacles, obstaclesTrees) {
-    this.spawns = this.physics.add.group({
+    this.spawns = this.add.group({
       classType: Villager
     });
 
@@ -162,24 +161,15 @@ export default new Phaser.Class({
       // parameters are x, y, width, height
       var enemy = this.spawns.create(x, y, 'agent-1', [3, 9, 3, 15], 3);
       enemy.init('npc_agent_'+i, true);
-      enemy.body.setCollideWorldBounds(true);
-      enemy.body.setImmovable();
+      // enemy.body.setCollideWorldBounds(true);
+      // enemy.body.setImmovable();
 
-      this.physics.add.collider(enemy, obstacles);
-      this.physics.add.collider(enemy, obstaclesTrees);
+      // this.physics.add.collider(enemy, obstacles);
+      // this.physics.add.collider(enemy, obstaclesTrees);
+
+      this.matter.add.gameObject(enemy);
     }
-
-    this.physics.add.collider(this.player, this.spawns);
-    this.physics.add.collider(this.spawns, this.spawns);
-
-    // move enemies
-    this.timedEvent = this.time.addEvent({
-      delay: 3000,
-      callback: this.moveEnemies,
-      callbackScope: this,
-      loop: true
-    });
-  },
+  }
 
   createItems(items) {
     this.itemZones = this.physics.add.group({ classType: EventZone });
@@ -213,7 +203,7 @@ export default new Phaser.Class({
     this.itemSprites.children.entries.forEach(makeImmovable);
     this.physics.add.overlap(this.player, this.itemZones, triggerZone, false, this);
     this.physics.add.collider(this.player, this.itemSprites);
-  },
+  }
 
   createEncounters(encounters) {
     this.encounterZones = this.physics.add.group({ classType: EncounterZone });
@@ -250,7 +240,7 @@ export default new Phaser.Class({
     this.encounterSprites.children.entries.forEach(makeImmovable);
     this.physics.add.overlap(this.player, this.encounterZones, this.onEncounter, false, this);
     this.physics.add.collider(this.player, this.encounterSprites);
-  },
+  }
 
   onEncounter(player, zone) {
     zone.trigger();
@@ -260,7 +250,7 @@ export default new Phaser.Class({
     zone.sprites.forEach(sprite => {
       this.rotateTowardsPlayer(sprite);
     });
-  },
+  }
 
   moveEnemies () {
     this.spawns.getChildren().forEach((enemy) => {
@@ -274,7 +264,7 @@ export default new Phaser.Class({
         enemy.anims.stop();
       });
     }, 500);
-  },
+  }
 
   create() {
     // Map
@@ -282,20 +272,18 @@ export default new Phaser.Class({
     const tiles = this.map.addTilesetImage("SereneVillage2", "tiles"); // "tiles": resource name
 
     // "grass" and "obstacles" are layer names in map.json
-    const grass = this.map.createStaticLayer("Grass", tiles);
-    const obstacles = this.map.createStaticLayer("Obstacles", tiles);
+    const grass = this.map.createLayer("Grass", tiles);
+    const obstacles = this.map.createLayer("Obstacles", tiles);
 
     this.collisionLayer = obstacles;
 
     // Player
-    this.player = this.physics.add.sprite(100, 100, "player", 6); // "player": resource name
+    this.player = new Phaser.Physics.Matter.Sprite(this.matter.world, 100, 100, "player", 6);
+    this.add.existing(this.player);
 
     // Collision
-    this.physics.world.bounds.width = this.map.widthInPixels;
-    this.physics.world.bounds.height = this.map.heightInPixels;
-    this.player.setCollideWorldBounds(true);
-    obstacles.setCollisionByExclusion([-1]);
-    this.physics.add.collider(this.player, obstacles);
+    obstacles.setCollisionByProperty({ collides: true });
+    this.matter.world.convertTilemapLayer(obstacles);
 
     // Set up easystar js
     this.easystar = new EasyStar.js();
@@ -310,9 +298,6 @@ export default new Phaser.Class({
       }
       grid.push(col);
     }
-    
-    console.log("grid");
-    console.log(grid);
 
     this.easystar.setGrid(grid);
     this.easystar.setAcceptableTiles([-1]);
@@ -337,22 +322,23 @@ export default new Phaser.Class({
 
     // Pointer: grab the pointer of game input
     this.pointer = this.input.activePointer;
-  },
+  }
 
   update(time, delta) {
     // Player movement
-    this.player.body.setVelocity(0);
+    const speed = 2.5;
+    let playerVelocity = new Phaser.Math.Vector2();
 
     if (this.cursorKeys.left.isDown) {
-      this.player.body.setVelocityX(-VELOCITY);
+      playerVelocity.x = -1;
     } else if (this.cursorKeys.right.isDown) {
-      this.player.body.setVelocityX(VELOCITY);
+      playerVelocity.x = 1;
     }
 
     if (this.cursorKeys.up.isDown) {
-      this.player.body.setVelocityY(-VELOCITY);
+      playerVelocity.y = -1;
     } else if (this.cursorKeys.down.isDown) {
-      this.player.body.setVelocityY(VELOCITY);
+      playerVelocity.y = 1;
     }
 
     // Player animation
@@ -368,33 +354,20 @@ export default new Phaser.Class({
     } else if (this.cursorKeys.down.isDown) {
       this.player.anims.play("down", true);
       this.player.flipX = false;
-    } else if (this.cursorKeys.left.isDown && this.cursorKeys.up.isDown) {
-      this.player.body.setVelocityX(-speedDiag);
-      this.player.body.setVelocityY(-speedDiag);
-    } else if (this.cursorKeys.right.isDown && this.cursorKeys.up.isDown) {
-      this.player.body.setVelocityX(speedDiag);
-      this.player.body.setVelocityY(-speedDiag);
-    } else if (this.cursorKeys.left.isDown && this.cursorKeys.down.isDown) {
-      this.player.body.setVelocityX(-speedDiag);
-      this.player.body.setVelocityY(speedDiag);
-    } else if (this.cursorKeys.right.isDown && this.cursorKeys.down.isDown) {
-      this.player.body.setVelocityX(speedDiag);
-      this.player.body.setVelocityY(speedDiag);
     } else {
       this.player.anims.stop();
     }
 
-    // Reset event zone overlaps
-    // this.eventZones.children.entries.forEach(zone => zone.reset());
-    // this.itemZones.children.entries.forEach(zone => zone.reset());
-    // this.encounterZones.children.entries.forEach(zone => zone.reset());
+    playerVelocity.normalize();
+    playerVelocity.scale(speed);
+    this.player.setVelocity(playerVelocity.x, playerVelocity.y);
+
     this.cameraDolly.x = Math.floor(this.player.x);
     this.cameraDolly.y = Math.floor(this.player.y);
     
-
     // update all spawns
     this.spawns.getChildren().forEach((enemy) => {
       enemy.update(time, delta, this.pointer);
     });
   }
-});
+}

@@ -8,9 +8,9 @@ export default class AgentNPC extends Phaser.GameObjects.Sprite {
         this.spriteTexture = texture;
 
         // Add self to scene's physics
-        this.scene.physics.world.enable(this);
-        this.scene.physics.add.existing(this);
-        this.body.setCollideWorldBounds(true);
+        // this.scene.physics.world.enable(this);
+        // this.scene.physics.add.existing(this);
+        // this.body.setCollideWorldBounds(true);
 
         this.maxHP = 100;
         this.hp = this.maxHP;
@@ -64,7 +64,7 @@ export default class AgentNPC extends Phaser.GameObjects.Sprite {
         for (let i = 0; i < path.length; i++) {
             let x = path[i].x * this.scene.map.tileWidth + this.scene.map.tileWidth / 2;
             let y = path[i].y * this.scene.map.tileHeight + this.scene.map.tileHeight / 2;
-            this.pathGraphics.fillCircle(x, y, this.scene.map.tileWidth / 4);
+            this.pathGraphics.fillCircle(x, y, this.scene.map.tileWidth / 8);
         }
     }
 

@@ -1,19 +1,24 @@
 {
   "private": true,
   "scripts": {
-    "start": "parcel -- watch src/index.html",
+    "start": "rm -rf .parcel-cache && parcel src/index.html",
     "build": "parcel build src/index.html"
+  },
+  "alias": {
+    "process": false
   },
   "dependencies": {
     "assets": "^3.0.1",
     "classnames": "^2.2.6",
     "easystarjs": "^0.4.4",
-    "phaser": "^3.24.1",
+    "parcel": "^2.8.3",
+    "phaser": "^3.60.0",
+    "phaser-matter-collision-plugin": "^1.0.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.12.4"
+    "process": "^0.11.10"
   }
 }

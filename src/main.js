@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import PhaserMatterCollisionPlugin from "phaser-matter-collision-plugin";
 import BootScene from "./scenes/BootScene";
 import WorldScene from "./scenes/WorldScene";
 
@@ -12,15 +13,23 @@ const game = new Phaser.Game({
   width: 520,
   height: 340,
   zoom: 2,
-  pixelArt: true,
 
   physics: {
-    default: "arcade",
-
-    arcade: {
+    default: "matter",
+    matter: {
       gravity: { y: 0 },
-      debug: true
+      debug: false
     }
+  },
+
+  plugins: {
+    scene: [
+      {
+        plugin: PhaserMatterCollisionPlugin.default,
+        key: "matterCollision",
+        mapping: "matterCollision"
+      }
+    ]
   },
 
   scene: [
