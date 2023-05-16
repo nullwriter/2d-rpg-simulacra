@@ -5,6 +5,7 @@ import EventZone from "../objects/EventZone";
 import FramedSprite from "../objects/FramedSprite";
 import Villager from "../npc/Villager";
 import EasyStar from "easystarjs";
+import Player from "../player/Player";
 
 const VELOCITY = 80;
 const ITEM_PADDING = 10;
@@ -278,8 +279,7 @@ export default class WorldScene extends Phaser.Scene {
     this.collisionLayer = obstacles;
 
     // Player
-    this.player = new Phaser.Physics.Matter.Sprite(this.matter.world, 100, 100, "player", 6);
-    this.add.existing(this.player);
+    this.player = new Player(this, 100, 100, "player", 6);
 
     // Collision
     obstacles.setCollisionByProperty({ collides: true });
@@ -302,10 +302,6 @@ export default class WorldScene extends Phaser.Scene {
     this.easystar.setGrid(grid);
     this.easystar.setAcceptableTiles([-1]);
 
-    // Keyboard
-    this.cursorKeys = this.input.keyboard.createCursorKeys();
-    this.actionKey = this.input.keyboard.addKey("space");
-
     // Camera
     this.cameras.main.setBounds(0, 0, grass.width * grass.scaleX, grass.height * grass.scaleY);
     this.cameras.main.roundPixels = true; // hmmmmm
@@ -320,50 +316,19 @@ export default class WorldScene extends Phaser.Scene {
     // World elements
     this.createAgentNPCs(AGENTS, obstacles);
 
+    // Keyboard
+    this.actionKey = this.input.keyboard.addKey("space");
+
     // Pointer: grab the pointer of game input
     this.pointer = this.input.activePointer;
   }
 
   update(time, delta) {
-    // Player movement
-    const speed = 2.5;
-    let playerVelocity = new Phaser.Math.Vector2();
-
-    if (this.cursorKeys.left.isDown) {
-      playerVelocity.x = -1;
-    } else if (this.cursorKeys.right.isDown) {
-      playerVelocity.x = 1;
-    }
-
-    if (this.cursorKeys.up.isDown) {
-      playerVelocity.y = -1;
-    } else if (this.cursorKeys.down.isDown) {
-      playerVelocity.y = 1;
-    }
-
-    // Player animation
-    if (this.cursorKeys.left.isDown) {
-      this.player.anims.play("side", true);
-      this.player.flipX = true;
-    } else if (this.cursorKeys.right.isDown) {
-      this.player.anims.play("side", true);
-      this.player.flipX = false;
-    } else if (this.cursorKeys.up.isDown) {
-      this.player.anims.play("up", true);
-      this.player.flipX = false;
-    } else if (this.cursorKeys.down.isDown) {
-      this.player.anims.play("down", true);
-      this.player.flipX = false;
-    } else {
-      this.player.anims.stop();
-    }
-
-    playerVelocity.normalize();
-    playerVelocity.scale(speed);
-    this.player.setVelocity(playerVelocity.x, playerVelocity.y);
-
+    // Camera
     this.cameraDolly.x = Math.floor(this.player.x);
     this.cameraDolly.y = Math.floor(this.player.y);
+
+    this.player.update(time, delta, this.cursors, this.actionKey);
     
     // update all spawns
     this.spawns.getChildren().forEach((enemy) => {
