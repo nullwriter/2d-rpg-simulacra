@@ -142,7 +142,7 @@ export default class WorldScene extends Phaser.Scene {
   }
 
   // createAgentNPCs function that creates NPCs from a list received from parameter
-  createAgentNPCs(npcs, obstacles, obstaclesTrees) {
+  createAgentNPCs() {
     this.spawns = this.add.group({
       classType: Villager
     });
@@ -295,7 +295,7 @@ export default class WorldScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.cameraDolly);
 
     // World elements
-    this.createAgentNPCs(AGENTS, obstaclesLayer);
+    this.createAgentNPCs();
 
     // Keyboard
     this.actionKey = this.input.keyboard.addKey("space");

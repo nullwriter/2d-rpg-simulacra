@@ -9,6 +9,31 @@ export default class Player extends Phaser.Physics.Matter.Sprite {
         this.scene.add.existing(this);
         this.cursorKeys = this.scene.input.keyboard.createCursorKeys();
         this.lastAnim = "idle_side";
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter;
+        var playerCollider = Bodies.circle(
+            this.x, 
+            this.y, 
+            12, 
+            { 
+                isSensor: false, 
+                label: "playerCollider" 
+            }
+        );
+        var playerSensor = Bodies.circle(
+            this.x,
+            this.y,
+            48,
+            {
+                isSensor: true,
+                label: "playerSensor"
+            }
+        );
+        const compoundBody = Body.create({
+            parts: [playerCollider, playerSensor],
+            frictionAir: 0.35,
+        });
+        this.setExistingBody(compoundBody);
     }
 
     static preload(scene) {

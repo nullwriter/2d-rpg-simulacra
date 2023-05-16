@@ -7,6 +7,31 @@ export default class Villager extends AgentNPC {
 
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter;
+        var playerCollider = Bodies.circle(
+            this.x, 
+            this.y, 
+            12, 
+            { 
+                isSensor: false, 
+                label: "playerCollider" 
+            }
+        );
+        var playerSensor = Bodies.circle(
+            this.x,
+            this.y,
+            48,
+            {
+                isSensor: true,
+                label: "playerSensor"
+            }
+        );
+        const compoundBody = Body.create({
+            parts: [playerCollider, playerSensor],
+            frictionAir: 0.35,
+        });
+        this.setExistingBody(compoundBody);
     }
 
     static preload(scene) {
